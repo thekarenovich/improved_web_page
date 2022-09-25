@@ -11,21 +11,25 @@
 {% block content %}
             <div class="card mb-3">
                 <div class="card-header">
-                    Категория: {{ news_item.category }}
+                    {{ news_item.created_at|date:"d M Y H:i" }}
                 </div>
                 <div class="card-body">
                     <div class="media">
                         {% if news_item.photo %}
-                            <img src="{{ news_item.photo.url }}" alt="" width="350" class="float-left mr-3">
+                            <img src="{{ news_item.photo.url }}" alt="" width="350" class="me-3 float-start>
                         {% endif %}
                         <div class="media-body">
                             <h5 class="card-title>">{{ news_item.title }}</h5>
                             <p class="card-text">{{ news_item.content|linebreaks }}</p>
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'update_news' news_item.pk %}" class="btn btn-primary">Редактировать</a>
+                                <a href="{% url 'delete_news' news_item.pk %}" class="btn btn-dark">Удалить</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    {{ news_item.created_at|date:"d M Y H:i" }}
+                    Количество просмотров: {{ news_item.views }}
                 </div>
             </div>
 {% endblock %}
