@@ -19,7 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 
+handler404 = "mysite.views.page_not_found_view"
+# mysite - название проекта и лишь он может меняться в зависимости от названия проекта
+
 urlpatterns = [
+    path('captcha/', include('captcha.urls')),
     path("admin/", admin.site.urls),
     path("", include('news.urls')),
 ]
