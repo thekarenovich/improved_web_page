@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} Заголовок user
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<h2 xmlns="http://www.w3.org/1999/html">Личный кабинет</h2>
+<div class="dropdown-menu position-static d-flex align-items-stretch p-2 rounded-3 w-600px">
+  <nav class="d-grid gap-2 col-12">
+
+    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
+      <div>
+          {% if user.username|length > 70 %}
+          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.username }} </strong>
+          {% elif user.username|length <= 70 %}
+          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.username }} </strong>
+          {% endif %}
+          <small>Имя пользователя</small>
+      </div>
+    </span>
+
+    <span class="rounded-2 d-flex align-items-center gap-5 py-2 px-3 lh-sm text-start">
+      <div>
+        {% if user.email %}
+            {% if user.email|length > 100 %}
+            <strong class="d-block" style="font-size: 4.5px; color: #0e6efd; "> {{ user.email }} </strong>
+            {% elif user.email|length <= 70 %}
+            <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.email }} </strong>
+            {% else %}
+            <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.email }} </strong>
+            {% endif %}
+            <small>E-mail</small>
+        {% else %}
+        <strong class="d-block" style="font-size: 20px; color: #6d757d;">Не зарегестрировано</strong>
+        <small>E-mail</small>
+        {% endif %}
+      </div>
+    </span>
+  </nav>
+</div>
+
+{% else %}
+    <main class="container">
+      <div class="bg-light p-5 rounded">
+          <center>
+              <h2>Вам доступен лишь режим чтения записей</h2>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>отправлять письма по почте</strong></p>
+          </center>
+      </div>
+    </main>
+{% endif %}
+
+{% endblock %}
+
+
+
