@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} Заголовок add_news
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <main class="container">
+      <div class="bg-light p-5 rounded">
+        <h1>Уверены, что хотите удалить запись?</h1>
+        <p class="lead">После удаления запись нельзя будет восстановить. Передумав, вы можете отменить действие</p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-dark">Удалить</button>
+          <a href="{% url 'home' %}" class="btn btn-primary">Отменить</a>
+        </form>
+      </div>
+    </main>
+  {% else %}
+      <main class="container">
+      <div class="bg-light p-5 rounded">
+          <center>
+              <h2>Вам доступен лишь режим чтения записей</h2>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>удалять, добавлять, редактировать</strong></p>
+          </center>
+       </div>
+    </main>
+  {% endif %}
+{% endblock %}
