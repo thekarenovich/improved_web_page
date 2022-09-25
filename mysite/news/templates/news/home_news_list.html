@@ -9,28 +9,63 @@
 {% endblock %}
 
 {% block content %}
+<h2>Все записи</h2>
         {% for item in object_list %}
             <div class="card mb-3">
                 <div class="card-header">
-                    Категория: <a style="text-decoration: none;" href="{% url 'category' item.category.pk %}">{{ item.category }}</a> 
+                    {{ item.created_at|date:"d M Y H:i" }}
                 </div>
                 <div class="card-body">
                     <div class="media">
                         {% if item.photo %}
-                            <img src="{{ item.photo.url }}" alt="" width="350" class="float-left mr-3">
+                            <img src="{{ item.photo.url }}" alt="" width="350" class="me-3 float-start">
                         {% endif %}
                         <div class="media-body">
                             <h5 class="card-title>">{{ item.title }}</h5>
-                            <p class="card-text">{{ item.content|linebreaks|truncatewords:50 }}</p>
+                            <p>{{ item.content|slice:"70" }}{% if item.content|length > 70 %}...{% endif %}</p>
                             <a href="{% url 'view_news' item.pk %}" class="btn btn-primary">Прочитать</a>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer text-muted">
-                    {{ item.created_at|date:"d M Y H:i" }}
-                </div>
             </div>
             {% empty %}
-                <h1>Извините. Список пуст</h1>
+             <main class="container">
+                 <div class="bg-light p-5 rounded">
+                     <center>
+                         <h2>Добавьте свою первую запись!)</h2>
+                     </center>
+                 </div>
+             </main>
             {% endfor %}
+
+
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1" tabindex="-1">В начало</a>
+                                </li>
+                            {% endif %}
+                            {% for p in page_obj.paginator.page_range %}
+                                {% if page_obj.number == p %}
+                                    <li class="page-item active" aria-current="page">
+                                        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                                    </li>
+                                {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Дальше</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+
+
 {% endblock %}
