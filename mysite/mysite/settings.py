@@ -23,9 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-hxu(ybu9%0qh16-f02u!=+v^^k5qk=uhi!@tw8y=agzu27-+^2"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
+DEBUG = True
 ALLOWED_HOSTS = []
+
+# DEBUG = False
+# ALLOWED_HOSTS = ['127.0.0.1']
+# terminal: python manage.py runserver 8001
 
 
 # Application definition
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "news",
+    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -127,6 +132,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'thekarenovich@yandex.ru'
-EMAIL_HOST_PASSWORD = 'erikman2002'
+EMAIL_HOST_PASSWORD = 'ezfgpijpwuwslyqr'
 EMAIL_USE_TLC = False
 EMAIL_USE_SSL = True
