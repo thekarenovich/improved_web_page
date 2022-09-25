@@ -9,14 +9,21 @@
 {% endblock %}
 
 {% block content %}
-
-<h1>Добавление новости</h1>
-
-<form action="{% url 'add_news' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit" class="btn btn-primary btn-block">Добавить</button>
-</form>
-
+    {% if request.user.is_authenticated %}
+        <h2>Добавить запись</h2>
+        <form action="{% url 'add_news' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+        </form>
+    {% else %}
+        <main class="container">
+          <div class="bg-light p-5 rounded">
+          <center>
+              <h2>Вам доступен лишь режим чтения записей</h2>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>удалять, добавлять, редактировать</strong></p>
+          </center>
+          </div>
+        </main>
+    {% endif %}
 {% endblock %}
