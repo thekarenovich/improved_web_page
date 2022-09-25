@@ -9,13 +9,22 @@
 {% endblock %}
 
 {% block content %}
-
-<h1>Вход</h1>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-block">Войти</button>
-</form>
+    {% if request.user.is_authenticated %}
+        <main class="container">
+          <div class="bg-light p-5 rounded">
+            <center>
+                <h2>Вы уже на сайте :)</h2>
+                <p class="lead">Приятного чтения, дорогой пользователь!</p>
+            </center>
+          </div>
+        </main>
+    {% else %}
+        <h2>Вход</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+        </form>
+    {% endif %}
 
 {% endblock %}
