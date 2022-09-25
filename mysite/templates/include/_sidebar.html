@@ -1,6 +1,13 @@
 <!--Sidebar-->
+
+
+<form style="margin-bottom: 15px; " action="{% url 'search' %}" method="get">
+    <input  style="width: 100%; border-radius: 7px; border: 1px solid #d2d2d2; padding-left: 10px;" type="text" name="s" placeholder="Поиск записи...">
+</form>
+
+
 <div class="list-group">
     {% for item in categories %}
-        <a href="{% url 'category' item.pk %}" class="list-group-item list-group-item-action">{{ item.title }}<span style="margin-left: 5px;" class="badge bg-primary">{{ item.cnt }}</span></a>
+        <a href="{% url 'category' item.pk %}" class="list-group-item list-group-item-action">{{ item.title }}<span style="margin-left: 10px;" class="badge bg-primary">{{ item.cnt }}</span></a>
     {% endfor %}
 </div>
