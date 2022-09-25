@@ -9,13 +9,23 @@
 {% endblock %}
 
 {% block content %}
+{% if request.user.is_authenticated %}
+    <h2>Написать по почте</h2>
 
-<h1>Отправка письма</h1>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-block">Отправить</button>
-</form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+    </form>
+{% else %}
+          <main class="container">
+      <div class="bg-light p-5 rounded">
+          <center>
+              <h2>Вам доступен лишь режим чтения записей</h2>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>отправлять письма по почте</strong></p>
+          </center>
+       </div>
+    </main>
+{% endif %}
 
 {% endblock %}
