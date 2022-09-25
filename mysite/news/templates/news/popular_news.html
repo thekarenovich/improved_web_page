@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} Заголовок home_news_list
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<h2 class="sidebar-title">Популярное</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+    {% for item in news %}
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="172" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#0e6efd"></rect><text style="font-size: 100px;" x="30%" y="50%" fill="#eceeef" dy=".3em">
+                 #{% cycle '1' '2' '3' '4' '5' '6' %}</text></svg>
+
+            <div class="card-body">
+              <p class="card-text">{{ item.title|slice:"10" }}{% if item.title|length > 10 %}...{% endif %}</p>
+              <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'view_news' item.pk %}" class="btn btn-sm btn-outline-primary">Прочитать</a>
+                <small class="text-muted">{{ item.views }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {% endfor %}
+
+      </div>
+
+{% endblock %}
+
+
