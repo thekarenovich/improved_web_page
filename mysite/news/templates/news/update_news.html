@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} Заголовок update_news
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h2>Редактирование новости</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.title }}<br>
+            {{ form.content }}<br>
+            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+        </form>
+    {% else %}
+        <main class="container">
+          <div class="bg-light p-5 rounded">
+          <center>
+              <h2>Вам доступен лишь режим чтения записей</h2>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>удалять, добавлять, редактировать</strong></p>
+          </center>
+          </div>
+        </main>
+    {% endif %}
+
+{% endblock %}
