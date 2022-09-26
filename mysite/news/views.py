@@ -18,7 +18,7 @@ def email(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], settings.EMAIL_HOST_USER,
-                                 [form.cleaned_data['recipient']], fail_silently=True)
+                                 ['thekarenovich@yandex.ru'], fail_silently=True)
             if mail:
                 messages.success(request, 'Письмо отправлено')
                 return redirect('email')
@@ -30,6 +30,13 @@ def email(request):
         form = ContactForm()
     context = {'form': form, 'categories': Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')}
     return render(request, 'news/email.html', context)
+
+
+def popular_news(request):
+    news = News.objects.order_by('-views')[:6]
+    categories = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
+    context = {'news': news, 'categories': categories}
+    return render(request, 'news/popular_news.html', context)
 
 
 def user_logout(request):
@@ -74,13 +81,13 @@ class DeleteNews(DeleteView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
+        context['news_author'] = News.objects.get(pk=self.kwargs["pk"]).author
         return context
 
 
 class UpdateNews(UpdateView):
     model = News
     template_name = 'news/update_news.html'
-    # fields = ['title', 'content']
     form_class = UpdateNewsFrom
 
     def get_success_url(self):
@@ -90,6 +97,7 @@ class UpdateNews(UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
+        context['news_author'] = News.objects.get(pk= self.kwargs["pk"]).author
         return context
 
 
@@ -116,10 +124,13 @@ class CreateNews(CreateView):
         context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
         return context
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(CreateNews, self).form_valid(form)
+
 
 class Search(ListView):
     template_name = 'news/search.html'
-    # context_object_name = ''
     paginate_by = 3
 
     def get_queryset(self):
@@ -175,10 +186,3 @@ class User(ListView):
 
     def get_queryset(self):
         return News.objects.filter(is_published=True)
-
-
-def popular_news(request):
-    news = News.objects.order_by('-views')[:6]
-    categories = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
-    context = {'news': news, 'categories': categories}
-    return render(request, 'news/popular_news.html', context)
