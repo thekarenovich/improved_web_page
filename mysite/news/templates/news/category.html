@@ -13,7 +13,7 @@
             {% for item in object_list %}
             <div class="card mb-3">
                 <div class="card-header">
-                    {{ item.created_at|date:"d M Y H:i" }}
+                    {{ item.author }} | {{ item.created_at|date:"d M Y H:i" }}
                 </div>
                 <div class="card-body">
                     <div class="media">
