@@ -22,7 +22,29 @@
           {% elif user.username|length <= 70 %}
           <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.username }} </strong>
           {% endif %}
-          <small>Имя пользователя</small>
+          <small>Никнэйм</small>
+      </div>
+    </span>
+
+    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
+      <div>
+          {% if user.username|length > 70 %}
+          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.first_name }} </strong>
+          {% elif user.username|length <= 70 %}
+          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.first_name }} </strong>
+          {% endif %}
+          <small>Имя</small>
+      </div>
+    </span>
+
+    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
+      <div>
+          {% if user.username|length > 70 %}
+          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.last_name }} </strong>
+          {% elif user.username|length <= 70 %}
+          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.last_name }} </strong>
+          {% endif %}
+          <small>Фамилия</small>
       </div>
     </span>
 
@@ -58,6 +80,3 @@
 {% endif %}
 
 {% endblock %}
-
-
-
