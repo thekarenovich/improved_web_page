@@ -2,7 +2,7 @@ pip3 install django
 pip3 install psycopg2-binary
 pip3 install Pillow
 
-
+ 
 django-admin startproject
 python3 manage.py runserver
 python3 manage.py startapp
