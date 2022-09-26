@@ -24,11 +24,11 @@ SECRET_KEY = "django-insecure-hxu(ybu9%0qh16-f02u!=+v^^k5qk=uhi!@tw8y=agzu27-+^2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
-ALLOWED_HOSTS = []
+# DEBUG = True
+# ALLOWED_HOSTS = []
 
-# DEBUG = False
-# ALLOWED_HOSTS = ['127.0.0.1']
+DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1']
 # terminal: python manage.py runserver 8001
 
 
