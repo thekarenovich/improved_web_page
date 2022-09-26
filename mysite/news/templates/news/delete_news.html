@@ -11,17 +11,33 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-    <main class="container">
-      <div class="bg-light p-5 rounded">
-        <h1>Уверены, что хотите удалить запись?</h1>
-        <p class="lead">После удаления запись нельзя будет восстановить. Передумав, вы можете отменить действие</p>
-        <form method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-dark">Удалить</button>
-          <a href="{% url 'home' %}" class="btn btn-primary">Отменить</a>
-        </form>
-      </div>
-    </main>
+
+    {% if request.user == news_author %}
+        <main class="container">
+          <div class="bg-light p-5 rounded">
+            <h1>Уверены, что хотите удалить запись?</h1>
+            <p class="lead">После удаления запись нельзя будет восстановить. Передумав, вы можете отменить действие</p>
+            <form method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-dark">Удалить</button>
+              <a href="{% url 'home' %}" class="btn btn-primary">Отменить</a>
+            </form>
+          </div>
+        </main>
+    {% else %}
+        <main class="container">
+            <div class="bg-light p-5 rounded">
+              <center>
+                  <h2>Данная запись не принадлежит вам!</h2>
+                  <p class="lead">Вы не можете ее <strong>удалить</strong>, только прочитать</p>
+              </center>
+            </div>
+        </main>
+
+    {% endif %}
+
+
+
   {% else %}
       <main class="container">
       <div class="bg-light p-5 rounded">
