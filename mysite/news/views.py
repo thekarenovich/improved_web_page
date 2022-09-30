@@ -50,39 +50,6 @@ def popular_news(request):
     news = News.objects.order_by('-views')[:6]
     categories = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
     context = {'news': news, 'categories': categories}
-
-
-    # if 16 <= len(str_number_to_shorten) < 19:
-    #     test = str_number_to_shorten[:-16]
-    #     if test == '':
-    #         context['views_str'] = '1Q'
-    #     else:
-    #         context['views_str'] = str_number_to_shorten[:-16] + "Q"
-    #
-    # elif 13 <= len(str_number_to_shorten) < 16:
-    #     test = str_number_to_shorten[:-13]
-    #     if test == '':
-    #         context['views_str'] = '1T'
-    #     else:
-    #         context['views_str'] = str_number_to_shorten[:-13] + "T"
-    #
-    # elif 10 <= len(str_number_to_shorten) < 13:
-    #     test = str_number_to_shorten[:-10]
-    #     if test == '':
-    #         context['views_str'] = '1B'
-    #     else:
-    #         context['views_str'] = str_number_to_shorten[:-10] + "B"
-    #
-    # elif 7 <= len(str_number_to_shorten) < 10:
-    #     test = str_number_to_shorten[:-7]
-    #     if test == '':
-    #         context['views_str'] = '1M'
-    #     else:
-    #         context['views_str'] = str_number_to_shorten[:-7] + "M"
-    #
-    # else:
-    #     context['views_str'] = News.objects.views
-
     return render(request, 'news/popular_news.html', context)
 
 
@@ -156,7 +123,7 @@ class ViewNews(DetailView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
 
-        self.object.views = F('views') + 100000000
+        self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
 
