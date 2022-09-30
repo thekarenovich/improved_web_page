@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ block.super }} Заголовок user
+    {{ block.super }} Заголовок home_news_list
 {% endblock %}
 
 {% block sidebar %}
@@ -10,73 +10,70 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}
-<h2 xmlns="http://www.w3.org/1999/html">Личный кабинет</h2>
-<div class="dropdown-menu position-static d-flex align-items-stretch p-2 rounded-3 w-600px">
-  <nav class="d-grid gap-2 col-12">
+<h2 class="sidebar-title">Популярное</h2>
 
-    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
-      <div>
-          {% if user.username|length > 70 %}
-          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.username }} </strong>
-          {% elif user.username|length <= 70 %}
-          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.username }} </strong>
-          {% endif %}
-          <small>Никнэйм</small>
-      </div>
-    </span>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
-      <div>
-          {% if user.username|length > 70 %}
-          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.first_name }} </strong>
-          {% elif user.username|length <= 70 %}
-          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.first_name }} </strong>
-          {% endif %}
-          <small>Имя</small>
-      </div>
-    </span>
+    {% for item in news %}
 
-    <span class="rounded-2 d-flex align-items-center gap-3 py-2 px-3 lh-sm text-start">
-      <div>
-          {% if user.username|length > 70 %}
-          <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.last_name }} </strong>
-          {% elif user.username|length <= 70 %}
-          <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.last_name }} </strong>
-          {% endif %}
-          <small>Фамилия</small>
-      </div>
-    </span>
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="172" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#0e6efd"></rect><text style="font-size: 100px;" x="30%" y="50%" fill="#eceeef" dy=".3em">
+                 #{% cycle '1' '2' '3' '4' '5' '6' %}</text></svg>
 
-    <span class="rounded-2 d-flex align-items-center gap-5 py-2 px-3 lh-sm text-start">
-      <div>
-        {% if user.email %}
-            {% if user.email|length > 100 %}
-            <strong class="d-block" style="font-size: 4.5px; color: #0e6efd; "> {{ user.email }} </strong>
-            {% elif user.email|length <= 70 %}
-            <strong class="d-block" style="font-size: 20px; color: #0e6efd; "> {{ user.email }} </strong>
-            {% else %}
-            <strong class="d-block" style="font-size: 9px; color: #0e6efd; "> {{ user.email }} </strong>
-            {% endif %}
-            <small>E-mail</small>
-        {% else %}
-        <strong class="d-block" style="font-size: 20px; color: #6d757d;">Не зарегестрировано</strong>
-        <small>E-mail</small>
-        {% endif %}
-      </div>
-    </span>
-  </nav>
-</div>
+            <div class="card-body">
+              <p class="card-text">{{ item.title|slice:"10" }}{% if item.title|length > 10 %}...{% endif %}</p>
+              <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'view_news' item.pk %}" class="btn btn-sm btn-outline-primary">Прочитать</a>
 
-{% else %}
-    <main class="container">
-      <div class="bg-light p-5 rounded">
-          <center>
-              <h2>Вам доступен лишь режим чтения записей</h2>
-              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>отправлять письма по почте</strong></p>
-          </center>
+                  {% if item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 18 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:3 }}Q</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 17 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:2 }}Q</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 16 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:1 }}Q</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 15 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:3 }}T</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 14 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:2 }}T</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 13 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:1 }}T</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 12 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:3 }}B</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 11 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:2 }}B</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 10 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:1 }}B</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 9 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:3 }}M</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 8 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:2 }}M</small>
+
+                  {%  elif item.views|stringformat:"i"|length and item.views|stringformat:"i"|length == 7 %}
+                    <small class="text-muted">{{ item.views|stringformat:"i"|slice:1 }}M</small>
+
+                  {% else %}
+                    <small class="text-muted">{{ item.views }}</small>
+
+                  {% endif %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {% endfor %}
+
       </div>
-    </main>
-{% endif %}
 
 {% endblock %}
