@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator
 from django.db.models import Count, F
@@ -11,8 +12,27 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from django.core.mail import send_mail
 from django.contrib import messages
 
-from .forms import NewsFrom, UserRegisterForm, UserLoginForm, ContactForm, UpdateNewsFrom
+from .forms import NewsFrom, UserRegisterForm, UserLoginForm, ContactForm, UpdateNewsFrom, UserDeleteForm
 from .models import News, Category
+
+
+@login_required
+def delete_user(request):
+    if request.method == 'POST':
+        delete_form = UserDeleteForm(request.POST, instance=request.user)
+        user = request.user
+        user.delete()
+        messages.info(request, f'Аккаунт {user} был удален')
+        return redirect('home')
+    else:
+        delete_form = UserDeleteForm(instance=request.user)
+
+    context = {
+        'delete_form': delete_form,
+        'categories': Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title'),
+    }
+
+    return render(request, 'news/delete_user.html', context)
 
 
 # def select_lang(request, code):
@@ -156,7 +176,7 @@ class ViewNews(DetailView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
 
-        self.object.views = F('views') + 100000000
+        self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
 
@@ -248,6 +268,34 @@ class HomeNews(ListView):
 
     def get_queryset(self):
         return News.objects.filter(is_published=True)
+
+
+class MyNews(ListView):
+    model = News
+    template_name = 'news/my_news.html'
+    context_object_name = 'news'
+    paginate_by = 3
+    # extra_context = {'categories': Category.objects.all()}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.annotate(cnt=Count('news', filter=F('news__is_published'))).filter(cnt__gt=0).order_by('title')
+
+        # news = []
+        # for i in News.objects.all():
+        #     if i.author == self.request.user:
+        #         news.append(News.objects.get(id=i.id))
+        # context['news'] = news
+
+        # context['news'] = News.objects.filter(author=self.request.user)
+
+        return context
+
+    # def get_queryset(self):
+    #     return News.objects.filter(is_published=True)
+
+    def get_queryset(self):
+        return News.objects.filter(author=self.request.user, is_published=True)
 
 
 class NewsByCategory(ListView):

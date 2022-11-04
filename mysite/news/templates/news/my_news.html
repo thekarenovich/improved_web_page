@@ -9,35 +9,50 @@
 {% endblock %}
 
 {% block content %}
-<h2>Все записи</h2>
-        {% for item in object_list %}
-            <div class="card mb-3">
-                <div class="card-header">
-                    {{ item.author }} | {{ item.created_at|date:"d M Y H:i" }}
-                </div>
-                <div class="card-body">
-                    <div class="media">
-                        {% if item.photo %}
-                            <img src="{{ item.photo.url }}" alt="" width="350" class="me-3 float-start">
-                        {% endif %}
-                        <div class="media-body">
-                            <h5 class="card-title>">{{ item.title }}</h5>
-                            <p>{{ item.content|slice:"70" }}{% if item.content|length > 70 %}...{% endif %}</p>
-                            <a href="{% url 'view_news' item.pk %}" class="btn btn-primary">Прочитать</a>
+
+{% if request.user.is_authenticated %}
+    <h2>Мои записи</h2>
+            {% for item in object_list %}
+    {% if item.author == request.user %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        {{ item.author }} | {{ item.created_at|date:"d M Y H:i" }}
+                    </div>
+                    <div class="card-body">
+                        <div class="media">
+                            {% if item.photo %}
+                                <img src="{{ item.photo.url }}" alt="" width="350" class="me-3 float-start">
+                            {% endif %}
+                            <div class="media-body">
+                                <h5 class="card-title>">{{ item.title }}</h5>
+                                <p>{{ item.content|slice:"70" }}{% if item.content|length > 70 %}...{% endif %}</p>
+                                <a href="{% url 'view_news' item.pk %}" class="btn btn-primary">Прочитать</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-             <main class="container">
-                 <div class="bg-light p-5 rounded">
-                     <center>
-                         <h3>Добавьте свою первую запись!)</h3>
-                     </center>
-                 </div>
-             </main>
-            {% endfor %}
+    {% endif %}
+                {% empty %}
+                 <main class="container">
+                     <div class="bg-light p-5 rounded">
+                         <center>
+                             <h3>Добавьте свою первую запись!)</h3>
+                         </center>
+                     </div>
+                 </main>
+                {% endfor %}
 
+
+{% else %}
+      <main class="container">
+      <div class="bg-light p-5 rounded">
+          <center>
+              <h3>У вас нет записей, поскольку вы зашли анонимно</h3>
+              <p class="lead">Авторизируйтесь и уже тогда вы сможете <strong>добавлять и смотреть</strong>свои записи</p>
+          </center>
+       </div>
+    </main>
+{% endif %}
 
                 {% if page_obj.has_other_pages %}
                     <nav aria-label="...">

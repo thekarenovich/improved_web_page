@@ -7,6 +7,7 @@
 
 
 <div class="list-group">
+    <a href="{% url 'home' %}" style="color: #0e6ffd; font-family: Verdana, Helvetica, Arial, sans-serif;" class="list-group-item list-group-item-action">Все записи</a>
     {% for item in categories %}
         <a href="{% url 'category' item.pk %}" class="list-group-item list-group-item-action">{{ item.title }}<span style="margin-left: 10px;" class="badge bg-primary">{{ item.cnt }}</span></a>
     {% endfor %}

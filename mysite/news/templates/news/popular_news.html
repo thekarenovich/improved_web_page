@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<h2 class="sidebar-title">Популярное</h2>
+<h2>Популярное</h2>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
@@ -72,8 +72,21 @@
           </div>
         </div>
 
+
     {% endfor %}
 
       </div>
+
+{% if news|length == 0 %}
+<p>
+             <main class="container">
+                 <div class="bg-light p-5 rounded">
+                     <center>
+                         <h3>Добавьте свою первую запись!)</h3>
+                     </center>
+                 </div>
+             </main>
+</p>
+{% endif %}
 
 {% endblock %}

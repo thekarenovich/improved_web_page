@@ -7,6 +7,12 @@ from captcha.fields import CaptchaField
 import re
 
 
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = []
+
+
 class ContactForm(forms.Form):
     # recipient = forms.EmailField(label='E-mail получателя', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     subject = forms.CharField(label='Тема', widget=forms.TextInput(attrs={'class': 'form-control'}))

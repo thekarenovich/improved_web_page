@@ -12,13 +12,13 @@
     {% if request.user.is_authenticated %}
 
         {% if request.user == news_author %}
-        <h2>Редактирование новости</h2>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.title }}<br>
-            {{ form.content }}<br>
-            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
-        </form>
+            <h2>Редактирование новости</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.title }}<br>
+                {{ form.content }}<br>
+                <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+            </form>
         {% else %}
             <main class="container">
               <div class="bg-light p-5 rounded">

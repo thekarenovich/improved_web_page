@@ -15,7 +15,7 @@
     {% if request.user == news_author %}
         <main class="container">
           <div class="bg-light p-5 rounded">
-            <h1>Уверены, что хотите удалить запись?</h1>
+            <h2>Уверены, что хотите удалить запись?</h2>
             <p class="lead">После удаления запись нельзя будет восстановить. Передумав, вы можете отменить действие</p>
             <form method="post">
               {% csrf_token %}

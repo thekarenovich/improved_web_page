@@ -9,6 +9,9 @@ urlpatterns = [
     path('login/', user_login, name='login'),  # Вход
     path('logout/', user_logout, name='logout'),  # Выход
     path('register/', register, name='register'),  # Регистрация
+
+    path('delete_user/', delete_user, name='delete_user'),  # Удаление пользователя
+
     path('news/add-news/', CreateNews.as_view(), name='add_news'),  # Добавление
     path('delete/<int:pk>/', DeleteNews.as_view(), name='delete_news'),  # Удаление записи
     path('update/<int:pk>/', UpdateNews.as_view(), name='update_news'),  # Редактирование записи
@@ -18,4 +21,5 @@ urlpatterns = [
     path('search/', Search.as_view(), name='search'),  # Поиск записей
     path('popular_news/', popular_news, name='popular_news'),  # Популярные записи
     path('', HomeNews.as_view(), name='home'),  # Главная - просмотр всех записей
+    path('my_news', MyNews.as_view(), name='my_news'),  # Мои записи - просмотр собственных записей
 ]
